@@ -2,7 +2,7 @@
   "tests": [
     {
       "name": "Style",
-      "setup": "sudo -H pip3 install -qr pre-commit",
+      "setup": "sudo -H pip3 install -q pre-commit",
       "run": "pre-commit run --all",
       "input": "",
       "output": "",
