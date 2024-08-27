@@ -2,8 +2,8 @@
   "tests": [
     {
       "name": "Style",
-      "setup": "sudo -H pip3 install -qr requirements.txt; sudo -H pip3 install flake8==5.0.4",
-      "run": "ruff check; pyright",
+      "setup": "sudo -H pip3 install -qr pre-commit",
+      "run": "pre-commit run --all",
       "input": "",
       "output": "",
       "comparison": "included",
