@@ -34,51 +34,67 @@ from typing import Callable, Iterable
 
 # TODO: Implement for Task 0.1.
 def mul(x: float, y: float) -> float:
+    """Multiplies two numbers."""
     return x * y
 
 def id(x: float) -> float:
+    """Returns the input unchanged."""
     return x
 
 def add(x: float, y: float) -> float:
+    """Adds two numbers."""
     return x + y
 
 def neg(x: float) -> float:
+    """Negates a number."""
     return -x
 
 def lt(x: float, y: float) -> bool:
+    """Checks if one number is less than another."""
     return x < y
 
 def eq(x: float, y: float) -> bool:
+    """Checks if two numbers are equal."""
     return x == y
 
 def max(x: float, y: float) -> float:
+    """Returns the larger of two numbers."""
     return x if x > y else y
 
 def is_close(x: float, y: float) -> bool:
+    """Checks if two numbers are close in value."""
     return abs(x - y) < 1e-2
 
 def sigmoid(x: float) -> float:
+    """Calculates the sigmoid function."""
     return 1.0 / (1.0 + math.exp(-x)) if x >= 0 else math.exp(x) / (1.0 + math.exp(x))
 
 def relu(x: float) -> float:
-    return max(0.0, x)
+    """Applies the ReLU activation function."""
+    return x if x > 0 else 0.0
 
 def log(x: float) -> float:
+    """Calculates the natural logarithm."""
     return math.log(x)
 
 def exp(x: float) -> float:
+    """Calculates the exponential function."""
     return math.exp(x)
 
-def log_back(x: float, d: float) -> float:
-    return d / x
-
 def inv(x: float) -> float:
+    """Calculates the reciprocal (1/x)."""
     return 1.0 / x
 
+def log_back(x: float, d: float) -> float:
+    """Computes the derivative of log times a second argument."""
+    return d / x
+
 def inv_back(x: float, d: float) -> float:
+    """Computes the derivative of reciprocal times a second argument."""
     return -d / (x * x)
 
 def relu_back(x: float, d: float) -> float:
+    """Computes the derivative of ReLU times a second argument."""
     return d if x > 0 else 0.0
 
 
