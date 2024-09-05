@@ -30,15 +30,31 @@ class Module:
         return list(m.values())
 
     def train(self) -> None:
-        """Set the mode of this module and all descendent modules to `train`."""
-        # TODO: Implement for Task 0.4.
+        """Set the mode of this module and all descendent modules to `train`.
+
+        This method sets the training attribute of the current module to True
+        and recursively sets the training attribute of all its descendant modules to True.
+
+        Returns
+        -------
+            None
+
+        """
         self.training = True
         for _, m in self._modules.items():
             m.training = True
 
     def eval(self) -> None:
-        """Set the mode of this module and all descendent modules to `eval`."""
-        # TODO: Implement for Task 0.4.
+        """Set the mode of this module and all descendent modules to `eval`.
+
+        This method sets the training attribute of the current module to False
+        and recursively sets the training attribute of all its descendant modules to False.
+
+        Returns
+        -------
+            None
+
+        """
         self.training = False
         for _, m in self._modules.items():
             m.training = False
@@ -60,8 +76,18 @@ class Module:
         return params
 
     def parameters(self) -> Sequence[Parameter]:
-        """Enumerate over all the parameters of this module and its descendents."""
-        # TODO: Implement for Task 0.4.
+        """Enumerate over all the parameters of this module and its descendents.
+
+        This method collects all the parameters of the current module and its
+        descendant modules, flattening the hierarchy into a single sequence.
+
+        Returns
+        -------
+        Sequence[Parameter]:
+            A sequence containing all the parameters of this module and its
+            descendents, without their names.
+
+        """
         return [param for _, param in self.named_parameters()]
 
     def add_parameter(self, k: str, v: Any) -> Parameter:

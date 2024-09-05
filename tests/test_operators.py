@@ -112,10 +112,9 @@ def test_sigmoid(a: float) -> None:
     assert_close(1 - s, sigmoid(-a))
     assert_close(sigmoid(0.0), 0.5)
     epsilon = 1e-5
-    if abs(a) < 20:  # Only check for non-extreme values
+    if abs(a) < 20:
         assert sigmoid(a + epsilon) > sigmoid(a)
     else:
-        # For extreme values, check that it's very close to 0 or 1
         assert (s < 1e-6) or (s > 1 - 1e-6)
 
 
@@ -149,8 +148,14 @@ def test_distribute(a: float, b: float, c: float) -> None:
 
 @pytest.mark.task0_2
 @given(small_floats)
-def test_other(a: float) -> None:
-    """Write a test that ensures some other property holds for your functions."""
+def test_double_negation(a: float) -> None:
+    """
+    Test that double negation of a number returns the original number.
+
+    This test ensures that applying the negation operation twice to a number
+    results in the original number, which is a fundamental property of the
+    negation operation.
+    """
     assert_close(neg(neg(a)), a)
 
 
