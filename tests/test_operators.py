@@ -178,8 +178,12 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     """Write a test that ensures that the sum of `ls1` plus the sum of `ls2`
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
-    sum_of_sums = minitorch.operators.add(minitorch.operators.sum(ls1), minitorch.operators.sum(ls2))
-    sum_of_elements = minitorch.operators.sum([minitorch.operators.add(a, b) for a, b in zip(ls1, ls2)])
+    sum_of_sums = minitorch.operators.add(
+        minitorch.operators.sum(ls1), minitorch.operators.sum(ls2)
+    )
+    sum_of_elements = minitorch.operators.sum(
+        [minitorch.operators.add(a, b) for a, b in zip(ls1, ls2)]
+    )
     assert_close(sum_of_sums, sum_of_elements)
 
 

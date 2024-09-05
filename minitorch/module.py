@@ -59,7 +59,6 @@ class Module:
 
         return params
 
-
     def parameters(self) -> Sequence[Parameter]:
         """Enumerate over all the parameters of this module and its descendents."""
         # TODO: Implement for Task 0.4.
