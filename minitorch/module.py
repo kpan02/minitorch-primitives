@@ -98,6 +98,21 @@ class Module:
         return None
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        """Make the module callable.
+
+        This method allows the module to be called like a function. It delegates
+        the call to the `forward` method of the module.
+
+        Args:
+        ----
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+        -------
+            Any: The output of the module's `forward` method.
+
+        """
         return self.forward(*args, **kwargs)
 
     def __repr__(self) -> str:
