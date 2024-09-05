@@ -3,7 +3,7 @@
 import math
 
 # ## Task 0.1
-from typing import Callable, Iterable
+from typing import Callable, Iterable, List
 
 #
 # Implementation of a prelude of elementary functions.
@@ -32,7 +32,7 @@ from typing import Callable, Iterable
 # $f(x) = |x - y| < 1e-2$
 
 
-# TODO: Implement for Task 0.1.
+# TASK 0.1
 def mul(x: float, y: float) -> float:
     """Multiplies two numbers."""
     return x * y
@@ -114,4 +114,39 @@ def relu_back(x: float, d: float) -> float:
 # - prod: take the product of lists
 
 
-# TODO: Implement for Task 0.3.
+# TASK 0.3
+
+def map(fn: Callable[[float], float], lst: List[float]) -> List[float]:
+    """Applies a function to each element of the list."""
+    return [fn(x) for x in lst]
+
+def zipWith(fn: Callable[[float, float], float], lst1: List[float], lst2: List[float]) -> List[float]:
+    """Combines two lists element-wise using a given function."""
+    return [fn(x, y) for x, y in zip(lst1, lst2)]
+
+def reduce(fn: Callable[[float, float], float], lst: List[float]) -> float:
+    """Reduces a list to a single value by repeatedly applying a function."""
+    if not lst:
+        raise ValueError("Cannot reduce an empty list without an initial value")
+    result = lst[0]
+    for x in lst[1:]:
+        result = fn(result, x)
+    return result
+
+def negList(lst: List[float]) -> List[float]:
+    """Negate all elements in a list using map."""
+    return map(neg, lst)
+
+def addLists(lst1: List[float], lst2: List[float]) -> List[float]:
+    """Add corresponding elements from two lists using zipWith."""
+    return zipWith(add, lst1, lst2)
+
+def sum(lst: List[float]) -> float:
+    """Sum all elements in a list using reduce."""
+    if not lst:
+        return 0.0
+    return reduce(add, lst)
+
+def prod(lst: List[float]) -> float:
+    """Calculate the product of all elements in a list using reduce."""
+    return reduce(mul, lst)
