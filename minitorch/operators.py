@@ -3,7 +3,7 @@
 import math
 
 # ## Task 0.1
-from typing import Callable, List
+from typing import Callable, Iterable
 
 #
 # Implementation of a prelude of elementary functions.
@@ -53,14 +53,14 @@ def neg(x: float) -> float:
     return -x
 
 
-def lt(x: float, y: float) -> bool:
+def lt(x: float, y: float) -> float:
     """Checks if one number is less than another."""
-    return x < y
+    return 1.0 if x < y else 0.0
 
 
-def eq(x: float, y: float) -> bool:
+def eq(x: float, y: float) -> float:
     """Checks if two numbers are equal."""
-    return x == y
+    return 1.0 if x == y else 0.0
 
 
 def max(x: float, y: float) -> float:
@@ -70,12 +70,15 @@ def max(x: float, y: float) -> float:
 
 def is_close(x: float, y: float) -> bool:
     """Checks if two numbers are close in value."""
-    return abs(x - y) < 1e-2
+    return (x - y < 1e-2) and (y - x < 1e-2)
 
 
 def sigmoid(x: float) -> float:
     """Calculates the sigmoid function."""
-    return 1.0 / (1.0 + math.exp(-x)) if x >= 0 else math.exp(x) / (1.0 + math.exp(x))
+    if x >= 0:
+        return 1.0 / (1.0 + math.exp(-x))
+    else:
+        return math.exp(x) / (1.0 + math.exp(x))
 
 
 def relu(x: float) -> float:
@@ -83,9 +86,12 @@ def relu(x: float) -> float:
     return x if x > 0 else 0.0
 
 
+EPS = 1e-6
+
+
 def log(x: float) -> float:
     """Calculates the natural logarithm."""
-    return math.log(x)
+    return math.log(x + EPS)
 
 
 def exp(x: float) -> float:
@@ -100,12 +106,12 @@ def inv(x: float) -> float:
 
 def log_back(x: float, d: float) -> float:
     """Computes the derivative of log times a second argument."""
-    return d / x
+    return d / (x + EPS)
 
 
 def inv_back(x: float, d: float) -> float:
     """Computes the derivative of reciprocal times a second argument."""
-    return -d / (x * x)
+    return -(1.0 / x**2) * d
 
 
 def relu_back(x: float, d: float) -> float:
@@ -132,45 +138,61 @@ def relu_back(x: float, d: float) -> float:
 # TASK 0.3
 
 
-def map(fn: Callable[[float], float], lst: List[float]) -> List[float]:
-    """Applies a function to each element of the list."""
-    return [fn(x) for x in lst]
+def map(fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[float]]:
+    """Maps a function over a list."""
+
+    def _map(ls: Iterable[float]) -> Iterable[float]:
+        ret = []
+        for x in ls:
+            ret.append(fn(x))
+        return ret
+
+    return _map
+
+
+def negList(lst: Iterable[float]) -> Iterable[float]:
+    """Negate all elements in a list using map."""
+    return map(neg)(lst)
 
 
 def zipWith(
-    fn: Callable[[float, float], float], lst1: List[float], lst2: List[float]
-) -> List[float]:
+    fn: Callable[[float, float], float],
+) -> Callable[[Iterable[float], Iterable[float]], Iterable[float]]:
     """Combines two lists element-wise using a given function."""
-    return [fn(x, y) for x, y in zip(lst1, lst2)]
+
+    def _zipWith(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+        ret = []
+        for x, y in zip(ls1, ls2):
+            ret.append(fn(x, y))
+        return ret
+
+    return _zipWith
 
 
-def reduce(fn: Callable[[float, float], float], lst: List[float]) -> float:
-    """Reduces a list to a single value by repeatedly applying a function."""
-    if not lst:
-        raise ValueError("Cannot reduce an empty list without an initial value")
-    result = lst[0]
-    for x in lst[1:]:
-        result = fn(result, x)
-    return result
-
-
-def negList(lst: List[float]) -> List[float]:
-    """Negate all elements in a list using map."""
-    return map(neg, lst)
-
-
-def addLists(lst1: List[float], lst2: List[float]) -> List[float]:
+def addLists(lst1: Iterable[float], lst2: Iterable[float]) -> Iterable[float]:
     """Add corresponding elements from two lists using zipWith."""
-    return zipWith(add, lst1, lst2)
+    return zipWith(add)(lst1, lst2)
 
 
-def sum(lst: List[float]) -> float:
+def reduce(
+    fn: Callable[[float, float], float], start: float
+) -> Callable[[Iterable[float]], float]:
+    """Reduces a list to a single value by repeatedly applying a function."""
+
+    def _reduce(ls: Iterable[float]) -> float:
+        val = start
+        for x in ls:
+            val = fn(val, x)
+        return val
+
+    return _reduce
+
+
+def sum(lst: Iterable[float]) -> float:
     """Sum all elements in a list using reduce."""
-    if not lst:
-        return 0.0
-    return reduce(add, lst)
+    return reduce(add, 0.0)(lst)
 
 
-def prod(lst: List[float]) -> float:
+def prod(lst: Iterable[float]) -> float:
     """Calculate the product of all elements in a list using reduce."""
-    return reduce(mul, lst)
+    return reduce(mul, 1.0)(lst)
